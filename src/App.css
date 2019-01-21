@@ -1,0 +1,42 @@
+body {
+    margin: 0 auto;
+    position: relative;
+}
+
+.access {
+    margin-top: 100px;
+	margin-left: 40%;
+	background-color: lightgrey;
+	width: 300px;
+	height: 210px
+}
+
+.text {
+    margin-left: 15%
+}
+
+#login {
+    margin-left: 10px
+}
+
+#pass {
+    margin-left: 10px;
+    width: 134px
+}
+
+.submit {
+    border: none;
+    background-color: white;
+    margin-left: 40%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+}
+
+.passive {
+    visibility: hidden
+}
+
+.header {
+    height: 90px;
+}
