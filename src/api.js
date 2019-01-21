@@ -19,11 +19,17 @@ const api = (method, email, password, hash, id) => {
             'Content-Type': 'application/json' // postman
         }
     }
-
-    return fetch(`http://std.powercode.pro:5000/api/v1/${method === 'POST' ? 'token' : 'user/' + id}`, options)
-        .then(res => {
-            return res.json()
-        })
+    if (id) {
+        return fetch(`http://std.powercode.pro:5000/api/v1/${method === 'POST' ? 'token' : 'user/' + id}`, options)
+            .then(res => {
+                return res.json()
+            })
+    } else {
+        return fetch(`http://std.powercode.pro:5000/api/v1/${method === 'POST' ? 'token' : 'user/'}`, options)
+            .then(res => {
+                return res.json()
+            })
+    }
     // .then(json => { //если без return
     //     console.log(json)
     // })
