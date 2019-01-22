@@ -3,6 +3,7 @@
     padding: 0;
     box-sizing: border-box;
 }
+
 body {
     margin: 0 auto;
     position: relative;
@@ -10,10 +11,6 @@ body {
 
 #root {
     padding-top: 100px
-}
-
-.App{
-    height: 100%;
 }
 
 .access {
@@ -52,10 +49,6 @@ body {
     padding-left: 13px;
 }
 
-.passive {
-    display: none
-}
-
 .header {
     font-family: 'Courier New', Courier, monospace;
     padding: 5px
@@ -63,7 +56,7 @@ body {
 
 .btnWrapper {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     height: 35px;
 }
@@ -71,7 +64,7 @@ body {
 form{
     width: 80%;
     margin: 0 auto;
-    height: 50px;
+    height: 90px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -80,4 +73,14 @@ form{
 .block{
     display: flex;
     justify-content: space-around;
+}
+
+.info {
+    padding-right: 5px;
+    font-family: 'Courier New', Courier, monospace;
+    display: none
+}
+
+.showInfo{
+    display: block
 }
