@@ -8,24 +8,25 @@ body {
     position: relative;
 }
 
+#root {
+    padding-top: 100px
+}
+
 .App{
     height: 100%;
 }
 
 .access {
-    margin-top: 100px;
-	margin-left: 35%;
 	background-color: lightgrey;
 	max-width: 400px;
-    min-width: 200px;
-    width: 30%;
-    height: 100%;
-    padding-bottom: 10px
+    min-width: 320px;
+    margin: 0 auto
 }
 
 .text {
     padding-right: 5px;
-    font-family: 'Courier New', Courier, monospace
+    font-family: 'Courier New', Courier, monospace;
+    flex-basis: 81px;
 }
 
 #login {
@@ -33,14 +34,12 @@ body {
     padding-left: 5px;
     border: none;
     font-family: 'Courier New', Courier, monospace;
-    width: 100%
 }
 
 #pass {
     padding: 0;
     padding-left: 5px;
     border: none;
-    width: 100%;
     font-family: 'Courier New', Courier, monospace
 }
 
@@ -50,30 +49,29 @@ body {
     font-family: 'Courier New', Courier, monospace;
     display: flex;
     width: 80px;
-    padding-left: 5px
+    padding-left: 13px;
 }
 
 .passive {
-    visibility: hidden;
+    display: none
 }
 
 .header {
-    margin-left: 15px;
     font-family: 'Courier New', Courier, monospace;
-    padding-left: 10px;
+    padding: 5px
 }
 
 .btnWrapper {
     display: flex;
     justify-content: space-around;
-    margin-top: 10px;
+    align-items: center;
+    height: 35px;
 }
 
 form{
     width: 80%;
     margin: 0 auto;
     height: 50px;
-    margin-top: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;

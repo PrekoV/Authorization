@@ -6,8 +6,9 @@ class App extends Component {
 
 	state = {
 		hash: '',
-		title: 'Log in',
-		user: {}
+		title: '',
+		user: {},
+		btn: ''
 	}
 
 	componentDidMount = () => {
@@ -16,8 +17,10 @@ class App extends Component {
 				.then(json => {
 					console.log(json.user.firstName)
 					console.log(localStorage.getItem("hash"))
-					this.setState({ user: json.user, title: 'Authorizated: ' + json.user.firstName })
+					this.setState({ user: json.user, title: 'Authorizated: ' + json.user.firstName, btn: 'Log out' })
 				})
+		} else {
+			this.setState({ title: 'Log in', btn: 'Submit' })
 		}
 	}
 
@@ -31,15 +34,11 @@ class App extends Component {
 		if (!localStorage.getItem("hash")) {
 			API(POST, login, pass)
 				.then(json => {
-					this.setState({ hash: json.token.hash, title: 'Welcome, ' + json.user.firstName + "!", user: json.user })
-					console.log(this.state.hash)
-					return this.state
-				}).then(state => {
-					localStorage.setItem("hash", state.hash)
-					localStorage.setItem("userId", state.user.id)
+					this.setState({ title: 'Welcome, ' + json.user.firstName + "!", user: json.user, btn: 'Log out' })
+					localStorage.setItem("hash", json.token.hash)
+					localStorage.setItem("userId", json.user.id)
 					document.getElementById("login").value = ''
 					document.getElementById("pass").value = ''
-					console.log(state)
 
 					// проверка: действительно ли пользователь в сети?
 					// при удачной авторизации можно просматривать данные других пользователей
@@ -55,15 +54,8 @@ class App extends Component {
 					this.setState({ title: 'Invalid username or password' })
 				})
 		} else {
-			console.log(localStorage.getItem("hash"))
-			this.setState({ title: 'You have been already authorized!' })
-		}
-	}
-
-	clearLocalStorage = () => {
-		if (localStorage.getItem("hash")) {
 			localStorage.clear()
-			this.setState({ hash: '', title: 'Log in' })
+			this.setState({ hash: '', title: 'Log in', btn: 'Submit' })
 		}
 	}
 
@@ -85,11 +77,7 @@ class App extends Component {
 						</div>
 					</form>
 					<div className="btnWrapper">
-						<button className="submit" onClick={() => this.auth()}>Submit</button>
-						<button className={`submit ${localStorage.getItem("hash") || this.state.hash ? '' : 'passive'}`}
-							onClick={() => this.clearLocalStorage()}>
-							Log out
-						</button>
+						<button className="submit" onClick={() => this.auth()}>{this.state.btn}</button>
 					</div>
 				</div>
 			</div>
