@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css'
-import API from './api'
+import axios from './api'
 const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 
 class App extends Component {
@@ -15,18 +15,18 @@ class App extends Component {
 
 	componentDidMount = () => {
 		if (localStorage.getItem("hash")) {
-			const hash = localStorage.getItem("hash")
-			const id = localStorage.getItem("userId")
-			API('GET', 'user/' + id)
-				.then(json => {
-					console.log(json.user.firstName)
-					console.log(hash)
+			const id = localStorage.getItem("id")
+			axios.get(`user/${id}`)
+				.then(res => {
+					console.log(res.data.user.firstName)
 					this.setState({
-						user: json.user,
+						user: res.data.user,
 						title: 'You are already authorizated',
 						btn: 'Log out',
 						displayInput: 'none'
 					})
+				}, err => {
+					this.setState({ title: err.message })
 				})
 		} else {
 			this.setState({ title: 'Log in', btn: 'Submit', displayInput: 'flex' })
@@ -36,43 +36,32 @@ class App extends Component {
 	auth = e => {
 		e.preventDefault()
 
-		const login = this.state.login
-		const pass = this.state.pass
-		const POST = 'POST'
 		const hash = localStorage.getItem("hash")
 
-		console.log("Input values: " + login + " " + pass)
-
 		if (hash === null || hash === '') {
-			console.log(emailPattern.test(this.state.login))
+			const login = this.state.login
+			const pass = this.state.pass
+			console.log("Input values: " + login + " " + pass)
 			if (emailPattern.test(login)) {
-				API(POST, 'token', { email: login, password: pass })
-					.then(json => {
+				axios.post('token/', { email: login, password: pass })
+					.then(res => {
+						//	console.log(res)
 						this.setState({
-							title: 'Welcome, ' + json.user.firstName + "!",
-							user: json.user,
+							title: 'Welcome, ' + res.data.user.firstName + "!",
+							user: res.data.user,
 							btn: 'Log out',
 							displayInput: 'none',
 							login: '',
 							pass: ''
 						})
-						localStorage.setItem("hash", json.token.hash)
-						localStorage.setItem("userId", json.user.id)
-
 						document.getElementById("login").value = ''
 						document.getElementById("pass").value = ''
-					}, err => {
-						console.log(err.message)
-					}).catch(error => {
-						console.log(error)
-						this.setState({ title: 'Invalid username or password' })
-					})
+					}, err => { console.log(err.message) })
 			}
 		} else {
 			localStorage.clear()
 			this.setState({ hash: '', title: 'Log in', btn: 'Submit', displayInput: 'flex', })
 		}
-
 	}
 
 	setChange = e => {
@@ -109,7 +98,6 @@ class App extends Component {
 							<button className="submit">{this.state.btn}</button>
 						</div>
 					</form>
-
 				</div>
 			</div>
 		);
