@@ -1,28 +1,28 @@
-import axios from 'axios'
+// import axios from 'axios'
 
-const API = axios.create({
-    baseURL: 'http://std.powercode.pro:5000/api/v1/'
-})
+// const API = axios.create({
+//     baseURL: 'http://std.powercode.pro:5000/api/v1/'
+// })
 
-API.interceptors.request.use(function (config) {
-    config.headers.common['authorization'] = localStorage.getItem('hash')
-    return config
-}, function (error) {
-    return Promise.reject(error)
-})
+// API.interceptors.request.use(function (config) {
+//     config.headers.common['authorization'] = localStorage.getItem('hash')
+//     return config
+// }, function (error) {
+//     return Promise.reject(error)
+// })
 
-API.interceptors.response.use(function (response) {
-    if (response.data.token) {
-        localStorage.setItem('hash', response.data.token.hash)
-        localStorage.setItem('id', response.data.user.id)
-    }
-    return response
-}, function (error) {
-    return Promise.reject(error)
-})
+// API.interceptors.response.use(function (response) {
+//     if (response.data.token) {
+//         localStorage.setItem('hash', response.data.token.hash)
+//         localStorage.setItem('id', response.data.user.id)
+//     }
+//     return response
+// }, function (error) {
+//     return Promise.reject(error)
+// })
 
 
-export default API
+// export default API
 // const api = (method, url, body) => {
 
 //     const hash = localStorage.getItem("hash");
@@ -70,3 +70,25 @@ export default API
 // }
 
 // export default api
+
+const api = (method, url, body) => {
+
+    const hash = localStorage.getItem("hash");
+
+    let options = {
+        method: method,
+        headers: {
+            'accept': 'application/json',
+            'authorization': hash,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    }
+
+    return fetch(`http://std.powercode.pro:5000/api/v1/${url}`, options)
+        .then(res => {
+            return res.json()
+        })
+}
+
+export default api 
