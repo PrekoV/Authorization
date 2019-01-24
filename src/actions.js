@@ -1,6 +1,6 @@
 import { EDIT_TITLE, EDIT_BTN, EDIT_DISPLAY_INPUT, EDIT_LOGIN, EDIT_PASSWORD, ADD_USER } from './consts'
 
-const editTitle = (text) => {
+export const editTitle = (text) => {
     return {
         type: EDIT_TITLE,
         text

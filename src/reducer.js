@@ -9,13 +9,14 @@ const initialState = {
     displayInput: ''
 }
 
-const reducer = (state = initialState, action) => {
-    let tempState = state
+export default function reducer(state = initialState, action) {
+    let tempState = { ...state }
     console.log(action)
     switch (action.type) {
-        case consts.EDIT_TITLE:
-            console.log(tempState)
+        case "EDIT_TITLE":
+            // console.log(tempState)
             tempState.title = action.text
+            // return { ...state, title: action.text }
             return tempState
         case consts.EDIT_BTN:
             tempState.btn = action.text
@@ -36,4 +37,3 @@ const reducer = (state = initialState, action) => {
     }
 }
 
-export default reducer

@@ -4,7 +4,7 @@ import API from './api'
 import { connect } from 'react-redux'
 import consts from './consts'
 import actions from './actions'
-
+import { editTitle } from "./actions"
 
 const authorizationThunk = (login, pass) => {
 	console.log('1')
@@ -39,8 +39,8 @@ const authorizationThunk = (login, pass) => {
 		localStorage.clear()
 		return function (dispatch) {
 			dispatch(actions.editTitle('Log in'))
-			setTimeout(function () { dispatch(actions.editBtn('Submit')) }, 1000)
-			setTimeout(function () { dispatch(actions.editDisplayInput('flex')) }, 2000)
+			setTimeout(function () { dispatch(actions.editBtn('Submit')) }, 0)
+			setTimeout(function () { dispatch(actions.editDisplayInput('flex')) }, 0)
 		}
 	}
 }
@@ -66,8 +66,8 @@ const authorizatedThunk = () => {
 	} else {
 		return function (dispatch) {
 			dispatch(actions.editTitle('Log in'))
-			setTimeout(function () { dispatch(actions.editBtn('Submit')) }, 1000)
-			setTimeout(function () { dispatch(actions.editDisplayInput('flex')) }, 2000)
+			setTimeout(function () { dispatch(actions.editBtn('Submit')) }, 0)
+			setTimeout(function () { dispatch(actions.editDisplayInput('flex')) }, 0)
 		}
 	}
 }
@@ -93,11 +93,14 @@ class App extends Component {
 		this.setChange = this.setChange.bind(this)
 	}
 
-	componentDidMount = () => { this.props.submitAuthorizatedThunk() }
+	componentDidMount = () => {
+		//this.props.dispatch(editTitle("wtttf!=)"))
+		this.props.submitAuthorizatedThunk()
+	}
 
 	auth = e => {
 		e.preventDefault()
-		this.props.submitAuthorizationThunk(this.props.state.login, this.props.state.pass)
+		this.props.submitAuthorizationThunk(this.props.wtf.login, this.props.wtf.pass)
 	}
 
 	setChange = e => { this.props.submitChangesThunk(e) }
@@ -108,7 +111,7 @@ class App extends Component {
 			<div className="App">
 				<div className="access">
 					<div className="header">
-						<h3>{console.log("kp", this.props.wtf.title)}</h3>
+						<h3>{this.props.wtf.title}</h3>
 					</div>
 					<form action="" onSubmit={this.auth}>
 						<div className="block" style={{ display: this.props.wtf.displayInput }}>
@@ -135,12 +138,12 @@ class App extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
 	console.log("state", state)
 	return { wtf: state }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		submitAuthorizatedThunk: () => dispatch(authorizatedThunk()),
 		submitAuthorizationThunk: (login, pass) => { dispatch(authorizationThunk(login, pass)) },
