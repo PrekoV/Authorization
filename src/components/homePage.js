@@ -5,37 +5,34 @@ class HomePage extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            title: 'Welcome, ' + this.props.authResults.user.firstName,
+            title: 'Welcome,',
             btn: 'Log out'
         }
-        this.auth = this.auth.bind(this)
+        this.logOut = this.logOut.bind(this)
     }
 
-    componentDidMount = () => {
-        console.log('dddddddddd', this.props)
-        this.props.submitAuthorizatedThunk()
-    }
+    componentDidMount = () => { this.props.submitAuthorizatedThunk() }
 
-    auth = e => {
+    logOut = e => {
         e.preventDefault()
-        this.props.submitAuthorizationThunk()
+        this.props.submitLogOutThunk()
     }
 
     render() {
-        const { authResults } = this.props
+        const { user } = this.props
         console.log("render homePage ")
         return (
             <div className="HomePage">
                 <div className="access">
                     <div className="header">
-                        <h3>{this.state.title}</h3>
+                        <h3>{this.state.title} {user.firstName ? user.firstName : 'Loading...'}</h3>
                     </div>
-                    <form action="" onSubmit={this.auth}>
+                    <form action="" onSubmit={this.logOut}>
                         <div className="info">
-                            name: {authResults.user.firstName} {authResults.user.lastName}
+                            name: {user.firstName && user.lastName ? user.firstName + " " + user.lastName : 'Loading...'}
                         </div>
                         <div className="info">
-                            age: {authResults.user.age}
+                            age: {user.age ? user.age : 'Loading...'}
                         </div>
                         <div className="btnWrapper">
                             <button className="submit">{this.state.btn}</button>

@@ -79,3 +79,8 @@ form{
     padding-right: 5px;
     font-family: 'Courier New', Courier, monospace;
 }
+
+.message {
+    font-size: 14px;
+    font-family: 'Courier New', Courier, monospace;
+}

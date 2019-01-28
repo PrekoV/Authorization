@@ -1,10 +1,15 @@
-import { AUTHORIZATION } from '../consts'
+import { AUTHORIZATION, ERROR_DATA } from '../consts'
 
-export const authorization = (isAuthorizated, user) => {
+export const authorization = (user) => {
     return {
         type: AUTHORIZATION,
-        isAuthorizated,
         user
     }
 }
 
+export const errorData = (err) => {
+    return {
+        type: ERROR_DATA,
+        err
+    }
+}

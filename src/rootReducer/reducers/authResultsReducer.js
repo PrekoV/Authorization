@@ -1,9 +1,8 @@
-import { AUTHORIZATION } from '../../consts'
+import { AUTHORIZATION, ERROR_DATA } from '../../consts'
 
 const initialState = {
-    loading: false,
-    isAuthorizated: false,
-    user: {}
+    user: {},
+    err: ''
 }
 
 export default function reducer(state = initialState, action) {
@@ -11,8 +10,12 @@ export default function reducer(state = initialState, action) {
         case AUTHORIZATION:
             return {
                 ...state,
-                isAuthorizated: action.isAuthorizated,
                 user: action.user
+            }
+        case ERROR_DATA:
+            return {
+                ...state,
+                err: action.err
             }
         default: return state
     }

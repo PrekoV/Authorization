@@ -8,15 +8,13 @@ import rootReducer from './rootReducer/rootReducer'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
-const number = 2
 
 //store.subscribe(() => { console.log(store); });
 
 ReactDOM.render(
     <Provider store={store}>
         <Router>
-            <Route path="/authorizationTask" component={App} number={number}>
-            </Route>
+            <Route path="/authorizationTask" component={App} />
         </Router>
     </Provider>, document.getElementById('root')
 );

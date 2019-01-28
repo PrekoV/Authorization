@@ -1,39 +1,41 @@
 import React, { Component } from 'react'
 import './styles/App.css'
 import { connect } from 'react-redux'
-import { authorizationThunk, authorizatedThunk } from '../actions/actionsCreators'
+import { authorizationThunk, authorizatedThunk, logOutThunk, setErrorData } from '../actions/actionsCreators'
 import AuthPage from './authPage'
 import HomePage from './homePage'
 
+
 const mapStateToProps = state => {
-	console.log(state)
-	return {
-		authResults: state.authResultsReducer
-	}
+	return { authResults: state.authResultsReducer }
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
 		submitAuthorizatedThunk: () => dispatch(authorizatedThunk()),
 		submitAuthorizationThunk: (login, pass) => { dispatch(authorizationThunk(login, pass)) },
+		submitLogOutThunk: () => dispatch(logOutThunk()),
+		submitErrorData: (error) => dispatch(setErrorData(error))
 	}
 }
 
 class App extends Component {
-
-	componentDidMount = () => { this.props.submitAuthorizatedThunk() }
-
 	render() {
-		console.log("render: ", this.props)
+		console.log("render App")
 		return (
 			<div className="App">
+
+
 				{
-					this.props.authResults.isAuthorizated === false ?
-						<AuthPage authResults={this.props.authResults} submitAuthorizationThunk={this.props.submitAuthorizationThunk} /> :
+					!localStorage.getItem("hash") ?
+						<AuthPage
+							err={this.props.authResults.err}
+							submitAuthorizationThunk={this.props.submitAuthorizationThunk}
+							submitErrorData={this.props.submitErrorData} /> :
 						<HomePage
-							authResults={this.props.authResults}
+							user={this.props.authResults.user}
 							submitAuthorizatedThunk={this.props.submitAuthorizatedThunk}
-							submitAuthorizationThunk={this.props.submitAuthorizationThunk} />
+							submitLogOutThunk={this.props.submitLogOutThunk} />
 				}
 
 				{/* <div className="access">

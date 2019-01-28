@@ -1,53 +1,46 @@
-import { emailPattern, POST, GET } from '../consts'
-import { authorization } from './actions'
+import { POST } from '../consts'
+import { authorization, errorData } from './actions'
 import API from '../connect/api'
 
 export const authorizationThunk = (login, pass) => {
     console.log('authorization')
-    console.log(login, pass)
-    if (!localStorage.getItem("hash") && login && pass) {
-        console.log("Input values: " + login + " " + pass)
-        if (emailPattern.test(login)) {
-            return function (dispatch) {
-                return API(POST, 'token/', { email: login, password: pass })
-                    .then(res => {
-                        localStorage.setItem("hash", res.token.hash)
-                        localStorage.setItem("id", res.user.id)
-                        dispatch(authorization(true, res.user))
-                    }, err => { console.log(err.message) })
-                    // .then(() => {
-                    //     document.getElementById("login").value = ''
-                    //     document.getElementById("pass").value = ''
-                    .catch(e => {
-                        console.log(e.message)
-                        dispatch(authorization(false, {}))
-                    })
-            }
-        }
-    } else {
-        localStorage.clear()
-        return function (dispatch) {
-            dispatch(authorization(false, {}))
-        }
+    return function (dispatch) {
+        return API(POST, 'token/', { email: login, password: pass })
+            .then(res => {
+                localStorage.setItem("hash", res.token.hash)
+                localStorage.setItem("user_data", JSON.stringify(res.user))
+                dispatch(authorization(res.user))
+                dispatch(errorData(''))
+            }, err => {
+                console.log(err.message)
+                dispatch(errorData('☹ There is some problems with server...'))
+            }).catch(e => {
+                console.log(e.message)
+                dispatch(errorData('✖ Invalid login or password'))
+                document.getElementById('pass').value = ''
+            })
     }
 }
 
 export const authorizatedThunk = () => {
     console.log('authorizated user')
-    if (localStorage.getItem("hash")) {
-        const id = localStorage.getItem("id")
-        return function (dispatch) {
-            return API(GET, 'user/' + id)
-                .then(res => {
-                    dispatch(authorization(true, res.user))
-                }, err => {
-                    dispatch(authorization(false, {}))
-                    console.log(err.message)
-                })
-        }
-    } else {
-        return function (dispatch) {
-            dispatch(authorization(false, {}))
-        }
+    const userData = localStorage.getItem("user_data")
+    return function (dispatch) {
+        dispatch(authorization(JSON.parse(userData)))
+        dispatch(errorData(''))
+    }
+}
+
+export const logOutThunk = () => {
+    localStorage.clear()
+    return function (dispatch) {
+        dispatch(authorization({}))
+        dispatch(errorData(''))
+    }
+}
+
+export const setErrorData = (error) => {
+    return function (dispatch) {
+        return dispatch(errorData(error))
     }
 }
