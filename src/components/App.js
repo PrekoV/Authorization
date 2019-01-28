@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import './styles/App.css'
 import { connect } from 'react-redux'
-import { authorizationThunk, authorizatedThunk, setChangesThunk } from '../actions/actionsCreators'
+import { authorizationThunk, authorizatedThunk } from '../actions/actionsCreators'
+import AuthPage from './authPage'
+import HomePage from './homePage'
 
 const mapStateToProps = state => {
 	console.log(state)
 	return {
-		authResults: state.authResultsReducer,
-		loginAndPass: state.loginAndPasswordReducer
+		authResults: state.authResultsReducer
 	}
 }
 
@@ -15,31 +16,27 @@ const mapDispatchToProps = dispatch => {
 	return {
 		submitAuthorizatedThunk: () => dispatch(authorizatedThunk()),
 		submitAuthorizationThunk: (login, pass) => { dispatch(authorizationThunk(login, pass)) },
-		submitChangesThunk: (e) => { dispatch(setChangesThunk(e)) }
 	}
 }
 
 class App extends Component {
-	constructor(props) {
-		super(props)
-		this.auth = this.auth.bind(this)
-		this.setChange = this.setChange.bind(this)
-	}
 
 	componentDidMount = () => { this.props.submitAuthorizatedThunk() }
-
-	auth = e => {
-		e.preventDefault()
-		this.props.submitAuthorizationThunk(this.props.loginAndPass.login, this.props.loginAndPass.pass)
-	}
-
-	setChange = e => { this.props.submitChangesThunk(e) }
 
 	render() {
 		console.log("render: ", this.props)
 		return (
 			<div className="App">
-				<div className="access">
+				{
+					this.props.authResults.isAuthorizated === false ?
+						<AuthPage authResults={this.props.authResults} submitAuthorizationThunk={this.props.submitAuthorizationThunk} /> :
+						<HomePage
+							authResults={this.props.authResults}
+							submitAuthorizatedThunk={this.props.submitAuthorizatedThunk}
+							submitAuthorizationThunk={this.props.submitAuthorizationThunk} />
+				}
+
+				{/* <div className="access">
 					<div className="header">
 						<h3>{this.props.authResults.title}</h3>
 					</div>
@@ -62,7 +59,7 @@ class App extends Component {
 							<button className="submit">{this.props.authResults.btn}</button>
 						</div>
 					</form>
-				</div>
+				</div> */}
 			</div>
 		);
 	}

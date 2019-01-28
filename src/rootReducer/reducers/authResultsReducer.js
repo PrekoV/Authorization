@@ -1,9 +1,8 @@
 import { AUTHORIZATION } from '../../consts'
 
 const initialState = {
-    title: '',
-    btn: '',
-    displayInput: '',
+    loading: false,
+    isAuthorizated: false,
     user: {}
 }
 
@@ -12,9 +11,7 @@ export default function reducer(state = initialState, action) {
         case AUTHORIZATION:
             return {
                 ...state,
-                title: action.title,
-                displayInput: action.displayInput,
-                btn: action.btn,
+                isAuthorizated: action.isAuthorizated,
                 user: action.user
             }
         default: return state

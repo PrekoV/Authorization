@@ -78,9 +78,4 @@ form{
 .info {
     padding-right: 5px;
     font-family: 'Courier New', Courier, monospace;
-    display: none
-}
-
-.showInfo{
-    display: block
 }
