@@ -1,5 +1,19 @@
 import React, { Component } from 'react'
 import { emailPattern } from '../consts'
+//import { connect } from 'react-redux'
+//import { authorizationThunk } from '../actions/actionsCreators'
+//import { Redirect } from 'react-router-dom'
+
+// const mapStateToProps = state => {
+//     return { err: state.authResultsReducer.err }
+// }
+
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         submitAuthorizationThunk: (login, pass) => { dispatch(authorizationThunk(login, pass)) },
+//         //	submitErrorData: (error) => dispatch(setErrorData(error))
+//     }
+// }
 
 class AuthPage extends Component {
     constructor(props) {
@@ -8,7 +22,8 @@ class AuthPage extends Component {
             title: 'Authorization',
             btn: 'Submit',
             login: '',
-            password: ''
+            password: '',
+            loading: false
         }
         this.auth = this.auth.bind(this)
         this.setChange = this.setChange.bind(this)
@@ -25,11 +40,13 @@ class AuthPage extends Component {
                 this.props.submitAuthorizationThunk(login, password)
             }
             //     else {
-            //         this.props.submitErrorData('✖ E-mail is not currect')
+            //         // this.props.submitErrorData('✖ E-mail is not currect')
             //     }
-            // } else {
-            //     this.props.submitErrorData('✖ Please, input loging and E-mail')
+        } else {
+            this.setState({ loading: false })
+            this.props.submitErrorData('✖ Please, input login and E-mail')
         }
+
     }
 
     setChange = event => {
@@ -44,6 +61,7 @@ class AuthPage extends Component {
                 <div className="access">
                     <div className="header">
                         <h3>{this.state.title}</h3>
+                        <div className="message">{this.state.loading && 'Loading...'}</div>
                         <div className="message" style={{ color: 'red' }}>{this.props.err}</div>
                     </div>
                     <form action="" onSubmit={this.auth}>
@@ -59,6 +77,7 @@ class AuthPage extends Component {
                             <button className="submit">{this.state.btn}</button>
                         </div>
                     </form>
+
                 </div>
             </div>
         );

@@ -1,6 +1,7 @@
 import { POST } from '../consts'
 import { authorization, errorData } from './actions'
 import API from '../connect/api'
+import { history } from '../store';
 
 export const authorizationThunk = (login, pass) => {
     console.log('authorization')
@@ -11,6 +12,7 @@ export const authorizationThunk = (login, pass) => {
                 localStorage.setItem("user_data", JSON.stringify(res.user))
                 dispatch(authorization(res.user))
                 dispatch(errorData(''))
+                history.push('/home')
             }, err => {
                 console.log(err.message)
                 dispatch(errorData('☹ There is some problems with server...'))
@@ -28,6 +30,7 @@ export const authorizatedThunk = () => {
     return function (dispatch) {
         dispatch(authorization(JSON.parse(userData)))
         dispatch(errorData(''))
+        history.push('/home')
     }
 }
 
@@ -36,6 +39,7 @@ export const logOutThunk = () => {
     return function (dispatch) {
         dispatch(authorization({}))
         dispatch(errorData(''))
+        history.push('/auth')
     }
 }
 

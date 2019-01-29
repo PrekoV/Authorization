@@ -1,4 +1,17 @@
 import React, { Component } from 'react'
+// import { connect } from 'react-redux'
+// import { authorizatedThunk, logOutThunk } from '../actions/actionsCreators'
+
+// const mapStateToProps = state => {
+//     return { user: state.authResultsReducer.user }
+// }
+
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         submitAuthorizatedThunk: () => dispatch(authorizatedThunk()),
+//         submitLogOutThunk: () => dispatch(logOutThunk())
+//     }
+// }
 
 class HomePage extends Component {
 
