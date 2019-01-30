@@ -1,5 +1,5 @@
 import { POST } from '../consts'
-import { authorization, errorData } from './actions'
+import { authorization, errorData, isAuthorizated } from './actions'
 import API from '../connect/api'
 import { history } from '../store';
 
@@ -10,8 +10,8 @@ export const authorizationThunk = (login, pass) => {
             .then(res => {
                 localStorage.setItem("hash", res.token.hash)
                 localStorage.setItem("user_data", JSON.stringify(res.user))
+                dispatch(isAuthorizated(true))
                 dispatch(authorization(res.user))
-                dispatch(errorData(''))
                 history.push('/home')
             }, err => {
                 console.log(err.message)
@@ -24,21 +24,22 @@ export const authorizationThunk = (login, pass) => {
     }
 }
 
-export const authorizatedThunk = () => {
-    console.log('authorizated user')
-    const userData = localStorage.getItem("user_data")
-    return function (dispatch) {
-        dispatch(authorization(JSON.parse(userData)))
-        dispatch(errorData(''))
-        history.push('/home')
-    }
-}
+// export const authorizatedThunk = () => {
+//     console.log('authorizated user')
+//     const userData = localStorage.getItem("user_data")
+//     return function (dispatch) {
+//         dispatch(authorization(JSON.parse(userData)))
+//         dispatch(errorData(''))
+//         dispatch(isAuthorizated(true))
+//     }
+// }
 
 export const logOutThunk = () => {
     localStorage.clear()
     return function (dispatch) {
         dispatch(authorization({}))
         dispatch(errorData(''))
+        dispatch(isAuthorizated(false))
         history.push('/auth')
     }
 }
@@ -46,5 +47,11 @@ export const logOutThunk = () => {
 export const setErrorData = (error) => {
     return function (dispatch) {
         return dispatch(errorData(error))
+    }
+}
+
+export const isAuthorizatedThunk = (value) => {
+    return function (dispatch) {
+        return dispatch(isAuthorizated(value))
     }
 }

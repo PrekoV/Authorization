@@ -1,19 +1,16 @@
 import React, { Component } from 'react'
 import { emailPattern } from '../consts'
-//import { connect } from 'react-redux'
-//import { authorizationThunk } from '../actions/actionsCreators'
-//import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { authorizationThunk, setErrorData } from '../actions/actionsCreators'
 
-// const mapStateToProps = state => {
-//     return { err: state.authResultsReducer.err }
-// }
+const mapStateToProps = state => { return { err: state.authResultsReducer.err } }
 
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         submitAuthorizationThunk: (login, pass) => { dispatch(authorizationThunk(login, pass)) },
-//         //	submitErrorData: (error) => dispatch(setErrorData(error))
-//     }
-// }
+const mapDispatchToProps = dispatch => {
+    return {
+        submitAuthorizationThunk: (login, pass) => { dispatch(authorizationThunk(login, pass)) },
+        submitErrorData: (error) => dispatch(setErrorData(error))
+    }
+}
 
 class AuthPage extends Component {
     constructor(props) {
@@ -37,20 +34,16 @@ class AuthPage extends Component {
         if (login && password) {
             console.log("Input values: ", login, " ", password)
             if (emailPattern.test(login)) {
+                this.props.submitErrorData('')
                 this.props.submitAuthorizationThunk(login, password)
             }
-            //     else {
-            //         // this.props.submitErrorData('✖ E-mail is not currect')
-            //     }
         } else {
             this.setState({ loading: false })
             this.props.submitErrorData('✖ Please, input login and E-mail')
         }
-
     }
 
     setChange = event => {
-        console.log('change input')
         this.setState({ [event.target.name]: event.target.value })
     }
 
@@ -84,4 +77,4 @@ class AuthPage extends Component {
     }
 }
 
-export default AuthPage;
+export default connect(mapStateToProps, mapDispatchToProps)(AuthPage);

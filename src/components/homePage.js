@@ -1,20 +1,12 @@
 import React, { Component } from 'react'
-// import { connect } from 'react-redux'
-// import { authorizatedThunk, logOutThunk } from '../actions/actionsCreators'
+import { connect } from 'react-redux'
+import { logOutThunk } from '../actions/actionsCreators'
 
-// const mapStateToProps = state => {
-//     return { user: state.authResultsReducer.user }
-// }
+const mapStateToProps = state => { return { user: state.authResultsReducer.user } }
 
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         submitAuthorizatedThunk: () => dispatch(authorizatedThunk()),
-//         submitLogOutThunk: () => dispatch(logOutThunk())
-//     }
-// }
+const mapDispatchToProps = dispatch => { return { submitLogOutThunk: () => dispatch(logOutThunk()) } }
 
 class HomePage extends Component {
-
     constructor(props) {
         super(props)
         this.state = {
@@ -23,8 +15,6 @@ class HomePage extends Component {
         }
         this.logOut = this.logOut.bind(this)
     }
-
-    componentDidMount = () => { this.props.submitAuthorizatedThunk() }
 
     logOut = e => {
         e.preventDefault()
@@ -57,4 +47,4 @@ class HomePage extends Component {
     }
 }
 
-export default HomePage;
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
