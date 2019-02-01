@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { emailPattern } from '../consts'
 import { connect } from 'react-redux'
-import { authorizationThunk, setErrorData } from '../actions/actionsCreators'
+import { authorizationThunk, setErrorData } from '../rootReducers/actions/actionsCreators'
 
 const mapStateToProps = state => { return { err: state.authResultsReducer.err } }
 
@@ -22,6 +22,7 @@ class AuthPage extends Component {
             password: '',
             loading: false
         }
+
         this.auth = this.auth.bind(this)
         this.setChange = this.setChange.bind(this)
     }
@@ -36,10 +37,11 @@ class AuthPage extends Component {
             if (emailPattern.test(login)) {
                 this.props.submitErrorData('')
                 this.props.submitAuthorizationThunk(login, password)
+                this.setState({ password: '' })
             }
         } else {
             this.setState({ loading: false })
-            this.props.submitErrorData('✖ Please, input login and E-mail')
+            this.props.submitErrorData('✖ Please, input E-mail and password')
         }
     }
 
@@ -52,19 +54,19 @@ class AuthPage extends Component {
         return (
             <div className="AuthPage">
                 <div className="access">
-                    <div className="header">
+                    <div className="title">
                         <h3>{this.state.title}</h3>
-                        <div className="message">{this.state.loading && 'Loading...'}</div>
+                        <div className="message">{this.state.loading && !this.props.err && 'Loading...'}</div>
                         <div className="message" style={{ color: 'red' }}>{this.props.err}</div>
                     </div>
-                    <form action="" onSubmit={this.auth}>
+                    <form onSubmit={this.auth}>
                         <div className="block">
                             <span className="text">Email</span>
                             <input type="email" name="login" placeholder="Email" id="login" onChange={this.setChange} />
                         </div>
                         <div className="block">
                             <span className="text">Password</span>
-                            <input type="password" name="password" placeholder="Password" id="pass" onChange={this.setChange} />
+                            <input type="password" name="password" value={this.state.password} placeholder="Password" id="pass" onChange={this.setChange} />
                         </div>
                         <div className="btnWrapper">
                             <button className="submit">{this.state.btn}</button>

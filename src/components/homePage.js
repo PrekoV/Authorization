@@ -1,19 +1,37 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { logOutThunk } from '../actions/actionsCreators'
+import { logOutThunk, authorizatedThunk } from '../rootReducers/actions/actionsCreators'
 
-const mapStateToProps = state => { return { user: state.authResultsReducer.user } }
+const mapStateToProps = state => {
+    return {
+        user: state.authResultsReducer.user,
+        err: state.authResultsReducer.err,
+        isAuth: state.authResultsReducer.isAuth
+    }
+}
 
-const mapDispatchToProps = dispatch => { return { submitLogOutThunk: () => dispatch(logOutThunk()) } }
+const mapDispatchToProps = dispatch => {
+    return {
+        submitLogOutThunk: () => dispatch(logOutThunk()),
+        submitAuthorizatedThunk: () => dispatch(authorizatedThunk())
+    }
+}
 
 class HomePage extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            title: 'Welcome,',
+            title: 'Account information about ',
             btn: 'Log out'
         }
         this.logOut = this.logOut.bind(this)
+    }
+
+    componentWillMount = () => {
+        if (!this.props.user.id) {
+            console.log("gg")
+            this.props.submitAuthorizatedThunk()
+        }
     }
 
     logOut = e => {
@@ -22,20 +40,20 @@ class HomePage extends Component {
     }
 
     render() {
-        const { user } = this.props
+        const { user, err } = this.props
         console.log("render homePage ")
         return (
             <div className="HomePage">
                 <div className="access">
-                    <div className="header">
-                        <h3>{this.state.title} {user.firstName ? user.firstName : 'Loading...'}</h3>
+                    <div className="title">
+                        <h3>{err ? err : user.firstName ? this.state.title + " " + user.firstName : 'Loading...'}</h3>
                     </div>
                     <form action="" onSubmit={this.logOut}>
                         <div className="info">
-                            name: {user.firstName && user.lastName ? user.firstName + " " + user.lastName : 'Loading...'}
+                            name: {!err ? user.firstName + " " + user.lastName : 'Loading...'}
                         </div>
                         <div className="info">
-                            age: {user.age ? user.age : 'Loading...'}
+                            age: {!err ? user.age : 'Loading...'}
                         </div>
                         <div className="btnWrapper">
                             <button className="submit">{this.state.btn}</button>

@@ -5,20 +5,29 @@
     font-family: 'Courier New', Courier, monospace;
 }
 
+.App{
+    height: 100vh;
+}
+
 body {
     margin: 0 auto;
     position: relative;
+    height: 100vh;
+    background-image: url("fon-179.jpg");
+    /* opacity: .3; */
 }
 
 #root {
-    padding-top: 100px
+    height: 100vh;
 }
 
 .access {
-	background-color: lightgrey;
+	background: rgba(218, 139, 165, 0.2);
 	max-width: 400px;
     min-width: 320px;
-    margin: 0 auto
+    margin: 0 auto;
+    border-radius: 30px;
+    margin-top: 100px;
 }
 
 .text {
@@ -46,8 +55,10 @@ body {
     padding-left: 13px;
 }
 
-.header {
-    padding: 5px
+.title {
+    padding-left: 15px;
+    padding-top: 10px;
+    padding-bottom: 5px;
 }
 
 .btnWrapper {
@@ -77,4 +88,10 @@ form{
 
 .message {
     font-size: 14px;
+}
+
+.header {
+    width: 100%;
+    background-color: rgb(221, 168, 186, 0.5);
+    padding: 7px
 }
